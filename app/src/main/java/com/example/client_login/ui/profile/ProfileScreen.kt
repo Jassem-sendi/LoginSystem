@@ -71,14 +71,18 @@ fun ProfileScreen(
                     .clip(RoundedCornerShape(100))
             )
         }
+
         Details("ID" , user?.payload?.user?._id.orEmpty())
+
         Details("First Name" , user?.payload?.user?.firstName.orEmpty())
+
         Details("Last Name" , user?.payload?.user?.lastName.orEmpty())
+
         Details("Phone Number " , user?.payload?.user?.phone.orEmpty())
+
         Details("Country " , user?.payload?.user?.country.orEmpty())
+
         Details("Phone Number " , user?.payload?.user?.phone.orEmpty())
-
-
     }
 
 }
