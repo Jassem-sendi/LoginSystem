@@ -67,12 +67,15 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation(libs.kotlinx.serialization.json.v151)
     implementation(libs.ktor.client.auth)
     implementation(libs.datastore)
     implementation(libs.datastore.preferences)
     implementation (libs.androidx.xlifecycle.runtime.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.test)
+    testImplementation(libs.koin.android.test)
 
 }

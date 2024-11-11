@@ -33,7 +33,11 @@ data class TokensDataStore(private val context: Context) {
           preferences[IS_LOGGED_IN] ?: false
       }.firstOrNull() ?: false
     }
-
+    suspend fun clearToken() {
+        context.dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
 
     companion object {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "token_data")

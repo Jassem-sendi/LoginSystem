@@ -42,6 +42,11 @@ class ProfileViewModel :ViewModel(){
             _profileScreenState.value = _profileScreenState.value.copy(userInfo = userInfo)
         }
     }
+    fun Logout(){
+        viewModelScope.launch {
+            tokensDataStore.clearToken()
+        }
+    }
 }
 data class Profile(
     val userInfo: UserInfo? =null

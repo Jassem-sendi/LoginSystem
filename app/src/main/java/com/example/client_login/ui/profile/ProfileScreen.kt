@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,6 +35,7 @@ import com.example.client_login.R
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(),
+    logout: () -> Unit,
     modifier: Modifier = Modifier
 ){
     val ui by viewModel.profileScreenState.collectAsState()
@@ -83,6 +85,16 @@ fun ProfileScreen(
         Details("Country " , user?.payload?.user?.country.orEmpty())
 
         Details("Phone Number " , user?.payload?.user?.phone.orEmpty())
+
+        Button(onClick = {
+            logout()
+            viewModel.Logout()
+        },modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp)
+        ) {
+            Text("Log out")
+        }
     }
 
 }
@@ -90,7 +102,9 @@ fun ProfileScreen(
 @Composable
 fun ProfileScreenPreview(){
     Box (Modifier.fillMaxSize().background(Color.White)){
-        ProfileScreen()
+        ProfileScreen(
+            logout = {}
+        )
     }
 }
 

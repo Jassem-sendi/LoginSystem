@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.client_login.data.RefreshResponse
 import com.example.client_login.data.TokensDataStore
 import com.example.client_login.data.TokensInformation
+import com.example.client_login.di.appModuels
 import com.example.client_login.ui.login.LoginScreen
 import com.example.client_login.ui.profile.ProfileScreen
 import com.example.client_login.ui.theme.Client_LoginTheme
@@ -36,6 +37,9 @@ import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
 lateinit var tokensDataStore: TokensDataStore
 
@@ -47,6 +51,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        startKoin {
+            androidContext(this@MainActivity)
+            androidLogger()
+            modules(appModuels)
+        }
         tokensDataStore = TokensDataStore(this)
 
         noAuthClient = HttpClient(Android) {
@@ -117,10 +126,15 @@ class MainActivity : ComponentActivity() {
                     startDestination = if (!isLoggedIn) Login else Profile
                 ) {
                     composable<Login> {
-                        LoginScreen(onNavigateToProfile = { navController.navigate(Profile) })
+                        LoginScreen(onNavigateToProfile = {
+                            navController.navigate(Profile)
+                        })
                     }
                     composable<Profile> {
-                        ProfileScreen()
+                        ProfileScreen(logout = {
+                            navController.navigate(Login)
+
+                        })
                     }
                 }
             }
