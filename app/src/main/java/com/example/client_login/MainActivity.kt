@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.get
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -40,8 +41,8 @@ import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.mp.KoinPlatform.getKoin
 
-lateinit var tokensDataStore: TokensDataStore
 
 lateinit var noAuthClient: HttpClient
 
@@ -52,11 +53,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         startKoin {
-            androidContext(this@MainActivity)
+            androidContext(applicationContext)
             androidLogger()
             modules(appModuels)
         }
-        tokensDataStore = TokensDataStore(this)
+        val tokensDataStore = getKoin().get<TokensDataStore>()
 
         noAuthClient = HttpClient(Android) {
             install(ContentNegotiation) {
@@ -128,11 +129,13 @@ class MainActivity : ComponentActivity() {
                     composable<Login> {
                         LoginScreen(onNavigateToProfile = {
                             navController.navigate(Profile)
+
                         })
                     }
                     composable<Profile> {
                         ProfileScreen(logout = {
                             navController.navigate(Login)
+                            navController.clearBackStack<Login>()
 
                         })
                     }

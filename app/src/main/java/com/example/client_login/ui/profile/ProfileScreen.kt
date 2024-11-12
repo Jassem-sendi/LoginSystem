@@ -1,6 +1,7 @@
 package com.example.client_login.ui.profile
 
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -38,6 +39,7 @@ fun ProfileScreen(
     logout: () -> Unit,
     modifier: Modifier = Modifier
 ){
+
     val ui by viewModel.profileScreenState.collectAsState()
     viewModel.fetchUserInfo()
     val user = ui.userInfo

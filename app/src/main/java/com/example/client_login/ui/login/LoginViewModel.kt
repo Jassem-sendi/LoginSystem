@@ -2,32 +2,25 @@ package com.example.client_login.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.client_login.data.RefreshResponse
 import com.example.client_login.data.TokensDataStore
 import com.example.client_login.data.TokensInformation
 import com.example.client_login.noAuthClient
-import com.example.client_login.tokensDataStore
-import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.android.Android
-import io.ktor.client.plugins.auth.Auth
-import io.ktor.client.plugins.auth.providers.BearerTokens
-import io.ktor.client.plugins.auth.providers.bearer
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.mp.KoinPlatform.getKoin
 
 class LoginViewModel: ViewModel() {
+    val tokensDataStore = getKoin().get<TokensDataStore>()
     private val _loginScreenState = MutableStateFlow(UiState())
     val loginScreenState: StateFlow<UiState> = _loginScreenState.asStateFlow()
     fun updateUsername(username: String) {
