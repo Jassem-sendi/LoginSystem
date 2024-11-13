@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.client_login.data.TokensDataStore
 import com.example.client_login.data.TokensInformation
-import com.example.client_login.network.createNoAuthHttpClient
+import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -19,7 +19,9 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 class LoginViewModel(
-    private val tokensDataStore: TokensDataStore
+    private val tokensDataStore: TokensDataStore,
+    private val noAuthClient: HttpClient,
+
 ): ViewModel() {
     private val _loginScreenState = MutableStateFlow(UiState())
     val loginScreenState: StateFlow<UiState> = _loginScreenState.asStateFlow()
@@ -34,7 +36,7 @@ class LoginViewModel(
     fun login() {
         viewModelScope.launch {
             try {
-                val response = createNoAuthHttpClient(tokensDataStore).post("https://api.lissene.com/api/v2/auth/login") {
+                val response = noAuthClient.post("api/v2/auth/login") {
                     contentType(ContentType.Application.Json)
                     setBody(
                         LoginInfo(

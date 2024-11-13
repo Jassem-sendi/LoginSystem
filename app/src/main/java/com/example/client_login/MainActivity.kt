@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(Unit) {
                 isLoggedIn = tokensDataStore.isLoggedIn()
             }
-            println("loginfo $isLoggedIn")
             Client_LoginTheme {
                 NavHost(
                     navController = navController ,

@@ -10,6 +10,7 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -17,16 +18,9 @@ import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-
+private const val BASE_URL = "https://api.lissene.com"
 fun createAuthHttpClient(tokensDataStore: TokensDataStore): HttpClient {
-    return HttpClient(Android) {
-        install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                ignoreUnknownKeys = true
-            })
-        }
-
+    return createNoAuthHttpClient(tokensDataStore).config {
         install(Auth) {
             bearer {
                 loadTokens {
@@ -35,12 +29,11 @@ fun createAuthHttpClient(tokensDataStore: TokensDataStore): HttpClient {
                         refreshToken = tokensDataStore.getRefreshToken(),
                     )
                 }
-
                 refreshTokens {
                     val refreshToken = tokensDataStore.getRefreshToken()
 
                     val refreshResponse =
-                        createNoAuthHttpClient(tokensDataStore).post("https://api.lissene.com/api/v2/auth/refresh") {
+                        createNoAuthHttpClient(tokensDataStore).post("$BASE_URL/api/v2/auth/refresh") {
                             contentType(ContentType.Application.Json)
                             setBody(RefreshResponse(refreshToken))
                         }
@@ -67,7 +60,7 @@ fun createAuthHttpClient(tokensDataStore: TokensDataStore): HttpClient {
     }
 
 }
-fun createNoAuthHttpClient(): HttpClient {
+fun createNoAuthHttpClient(tokensDataStore: TokensDataStore): HttpClient {
     val noAuthClient = HttpClient(Android) {
         install(ContentNegotiation) {
             json(Json {
@@ -75,6 +68,10 @@ fun createNoAuthHttpClient(): HttpClient {
                 ignoreUnknownKeys = true
             })
         }
+        defaultRequest {
+            url(BASE_URL)
+        }
     }
+
     return noAuthClient
 }

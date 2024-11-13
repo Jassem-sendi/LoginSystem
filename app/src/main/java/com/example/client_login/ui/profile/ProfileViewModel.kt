@@ -3,7 +3,7 @@ package com.example.client_login.ui.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.client_login.data.TokensDataStore
-import com.example.client_login.network.createAuthHttpClient
+import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,14 +12,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProfileViewModel (
-    private val tokensDataStore: TokensDataStore
+    private val tokensDataStore: TokensDataStore,
+    private val authClient: HttpClient
 ) :ViewModel(){
     private val _profileScreenState = MutableStateFlow(Profile())
     val profileScreenState: StateFlow<Profile> = _profileScreenState.asStateFlow()
     suspend fun getUserInfo(): UserInfo? {
         return try {
-            val response = createAuthHttpClient(tokensDataStore).get("https://api.lissene.com/api/v2/user/me")
-
+            val response = authClient.get("api/v2/user/me")
             response.body()
         } catch (e: Exception) {
             println("Error fetching user info: ${e.message}")
