@@ -5,12 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.client_login.data.TokensDataStore
 import com.example.client_login.data.TokensInformation
 import com.example.client_login.network.createNoAuthHttpClient
-import com.example.client_login.noAuthClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
-import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess

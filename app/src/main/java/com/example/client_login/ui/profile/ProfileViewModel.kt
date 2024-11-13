@@ -2,7 +2,6 @@ package com.example.client_login.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.client_login.authClient
 import com.example.client_login.data.TokensDataStore
 import com.example.client_login.network.createAuthHttpClient
 import io.ktor.client.call.body

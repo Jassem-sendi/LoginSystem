@@ -3,7 +3,6 @@ package com.example.client_login.network
 import com.example.client_login.data.RefreshResponse
 import com.example.client_login.data.TokensDataStore
 import com.example.client_login.data.TokensInformation
-import com.example.client_login.noAuthClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android
@@ -41,7 +40,7 @@ fun createAuthHttpClient(tokensDataStore: TokensDataStore): HttpClient {
                     val refreshToken = tokensDataStore.getRefreshToken()
 
                     val refreshResponse =
-                        noAuthClient.post("https://api.lissene.com/api/v2/auth/refresh") {
+                        createNoAuthHttpClient(tokensDataStore).post("https://api.lissene.com/api/v2/auth/refresh") {
                             contentType(ContentType.Application.Json)
                             setBody(RefreshResponse(refreshToken))
                         }
@@ -68,8 +67,8 @@ fun createAuthHttpClient(tokensDataStore: TokensDataStore): HttpClient {
     }
 
 }
-fun createNoAuthHttpClient(tokensDataStore: TokensDataStore): HttpClient {
-    noAuthClient = HttpClient(Android) {
+fun createNoAuthHttpClient(): HttpClient {
+    val noAuthClient = HttpClient(Android) {
         install(ContentNegotiation) {
             json(Json {
                 prettyPrint = true
