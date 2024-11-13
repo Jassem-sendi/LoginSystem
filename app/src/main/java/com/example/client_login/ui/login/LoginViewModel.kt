@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.client_login.data.TokensDataStore
 import com.example.client_login.data.TokensInformation
+import com.example.client_login.network.createNoAuthHttpClient
 import com.example.client_login.noAuthClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
+import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
@@ -17,10 +19,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import org.koin.mp.KoinPlatform.getKoin
 
-class LoginViewModel: ViewModel() {
-    val tokensDataStore = getKoin().get<TokensDataStore>()
+class LoginViewModel(
+    private val tokensDataStore: TokensDataStore
+): ViewModel() {
     private val _loginScreenState = MutableStateFlow(UiState())
     val loginScreenState: StateFlow<UiState> = _loginScreenState.asStateFlow()
     fun updateUsername(username: String) {
@@ -34,7 +36,7 @@ class LoginViewModel: ViewModel() {
     fun login() {
         viewModelScope.launch {
             try {
-                val response = noAuthClient.post("https://api.lissene.com/api/v2/auth/login") {
+                val response = createNoAuthHttpClient(tokensDataStore).post("https://api.lissene.com/api/v2/auth/login") {
                     contentType(ContentType.Application.Json)
                     setBody(
                         LoginInfo(

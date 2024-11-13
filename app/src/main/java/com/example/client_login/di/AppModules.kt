@@ -1,12 +1,19 @@
 package com.example.client_login.di
 
-import android.system.Os.bind
 import com.example.client_login.data.TokensDataStore
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.bind
-import org.koin.core.module.dsl.singleOf
+import com.example.client_login.network.createAuthHttpClient
+import com.example.client_login.network.createNoAuthHttpClient
+import com.example.client_login.ui.login.LoginViewModel
+import com.example.client_login.ui.profile.ProfileViewModel
+
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val appModuels = module {
+val appModules = module {
     single { TokensDataStore(get()) }
+    single { createAuthHttpClient(get()) }
+    single { createNoAuthHttpClient(get()) }
+    viewModel { LoginViewModel(get()) }
+    viewModel { ProfileViewModel(get()) }
 }
+

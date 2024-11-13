@@ -1,7 +1,6 @@
 package com.example.client_login.ui.profile
 
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -29,14 +28,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.client_login.R
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel = viewModel(),
-    logout: () -> Unit,
+    viewModel: ProfileViewModel = koinViewModel() ,
+    logout: () -> Unit ,
     modifier: Modifier = Modifier
 ){
 
