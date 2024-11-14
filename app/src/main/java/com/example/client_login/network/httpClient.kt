@@ -18,7 +18,10 @@ import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.koin.core.annotation.Single
+
 private const val BASE_URL = "https://api.lissene.com"
+@Single
 fun createAuthHttpClient(tokensDataStore: TokensDataStore): HttpClient {
     return createNoAuthHttpClient(tokensDataStore).config {
         install(Auth) {
@@ -45,7 +48,6 @@ fun createAuthHttpClient(tokensDataStore: TokensDataStore): HttpClient {
                             refreshToken = tokens.refreshToken ,
                             isLoggedIn = true
                         )
-                        println("From refresh ${tokens.accessToken}")
                         BearerTokens(
                             accessToken = tokensDataStore.getAccessToken() ,
                             refreshToken = tokensDataStore.getRefreshToken() ,
@@ -60,6 +62,7 @@ fun createAuthHttpClient(tokensDataStore: TokensDataStore): HttpClient {
     }
 
 }
+@Single
 fun createNoAuthHttpClient(tokensDataStore: TokensDataStore): HttpClient {
     val noAuthClient = HttpClient(Android) {
         install(ContentNegotiation) {

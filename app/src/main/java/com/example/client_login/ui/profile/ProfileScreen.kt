@@ -38,7 +38,6 @@ fun ProfileScreen(
     logout: () -> Unit ,
     modifier: Modifier = Modifier
 ){
-
     val ui by viewModel.profileScreenState.collectAsState()
     viewModel.fetchUserInfo()
     val user = ui.userInfo

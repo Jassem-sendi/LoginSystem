@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
+    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
 
 }
 
@@ -42,7 +43,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -58,11 +58,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    // ViewModel
     implementation (libs.androidx.lifecycle.viewmodel.ktx)
-    // ViewModel utilities for Compose
     implementation (libs.androidx.lifecycle.viewmodel.compose)
-    // ktor
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.content.negotiation)
@@ -77,5 +74,13 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.test)
     testImplementation(libs.koin.android.test)
+    implementation(libs.koin.android)
+    // Koin Annotations
+    implementation(libs.koin.annotations)
+    // Koin Annotations KSP Compiler
+    ksp(libs.koin.ksp.compiler)
+   // implementation(libs.koin.android)
+   // implementation(libs.koin.annotations)
+   // ksp(libs.koin.ksp.compiler)
 
 }

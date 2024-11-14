@@ -8,7 +8,9 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import org.koin.core.annotation.Single
 
+@Single
 data class TokensDataStore(private val context: Context) {
     suspend fun getAccessToken(): String {
         return context.dataStore.data.map { preferences ->

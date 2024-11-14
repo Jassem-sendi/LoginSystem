@@ -17,11 +17,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.android.annotation.KoinViewModel
 
+@KoinViewModel
 class LoginViewModel(
     private val tokensDataStore: TokensDataStore,
     private val noAuthClient: HttpClient,
-
 ): ViewModel() {
     private val _loginScreenState = MutableStateFlow(UiState())
     val loginScreenState: StateFlow<UiState> = _loginScreenState.asStateFlow()
